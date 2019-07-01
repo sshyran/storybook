@@ -8,16 +8,8 @@ import { toId } from '@storybook/router/utils';
 import mergeWith from 'lodash/mergeWith';
 import isEqual from 'lodash/isEqual';
 import get from 'lodash/get';
-import {
-  ClientApiParams,
-  IApi,
-  IDecoratorParams,
-  IHierarchyObj,
-  StoryStore,
-  StoryFn,
-} from './types';
+import { ClientApiParams, IApi, IDecoratorParams, StoryStore, StoryFn, IAddon } from './types';
 import subscriptionsStore from './subscriptions_store';
-import { IAddon } from '../dist/types';
 
 // merge with concatenating arrays, but no duplicates
 const merge = (a: any, b: any) =>
@@ -166,9 +158,11 @@ export default class ClientApi {
     const localDecorators: any[] | (() => void)[] = [];
     let localParameters = {};
     let hasAdded = false;
-    const api = {
-      kind,
-    } as IApi;
+    const api: IApi = {
+      add: () => api,
+      addDecorator: () => api,
+      addParameters: () => api,
+    };
 
     // apply addons
     Object.keys(this._addons).forEach(name => {
